@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Friendship Day Greeting Generator</title>
+    <title>Friendship Day Greeting from Adhi</title>
     <style>
         /* --- Google Font Import --- */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
@@ -129,6 +129,11 @@
             background-color: var(--pink);
             box-shadow: 0 0 20px var(--pink), 0 0 40px var(--pink), inset 0 0 10px #fff;
         }
+        
+        #generateBtn {
+            /* Changed text to reflect its new function */
+            content: 'Update Greeting';
+        }
 
         /* --- Generated Message Card --- */
         .neon-box {
@@ -227,15 +232,15 @@
         </div>
         
         <!-- Generate Button -->
-        <button id="generateBtn" class="neon-button">Generate Greeting</button>
+        <button id="generateBtn" class="neon-button">Update Greeting</button>
 
-        <!-- Generated Message Card (Initially Hidden) -->
-        <div id="greetingCard" class="neon-box" style="display: none;">
+        <!-- Generated Message Card (Visible by default) -->
+        <div id="greetingCard" class="neon-box">
             <p id="greetingMessage"></p>
         </div>
         
-        <!-- Share on WhatsApp Button (Initially Hidden) -->
-        <button id="shareBtn" class="neon-button" style="display: none;">Share on WhatsApp</button>
+        <!-- Share on WhatsApp Button (Visible by default) -->
+        <button id="shareBtn" class="neon-button">Share on WhatsApp</button>
     </div>
 
     <script>
@@ -247,47 +252,47 @@
             const greetingMessage = document.getElementById('greetingMessage');
             const shareBtn = document.getElementById('shareBtn');
 
-            // Event listener for the "Generate Greeting" button
-            generateBtn.addEventListener('click', () => {
-                const name = nameInput.value.trim();
+            // --- Pre-fill the greeting for "Adhi" on page load ---
+            const defaultName = 'Adhi';
 
-                // Validate that the name is not empty
+            // Function to generate and display the greeting
+            function createGreeting(name) {
+                // Validate name
                 if (name === '') {
-                    // Add an error class for a shake animation
                     nameInput.classList.add('error');
-                    // Remove the class after the animation ends
-                    setTimeout(() => {
-                        nameInput.classList.remove('error');
-                    }, 500);
-                    return; // Stop the function
+                    setTimeout(() => nameInput.classList.remove('error'), 500);
+                    return;
                 }
-
-                // Create the custom greeting message
+                
+                // Create the custom message
                 const message = `Happy Friendship Day from ${name}! 🎉 You're an amazing friend and I'm so grateful for you!`;
                 
-                // Display the message in the neon box
+                // Display the message
                 greetingMessage.innerText = message;
+                
+                // Ensure card and button are visible
                 greetingCard.style.display = 'block';
-                shareBtn.style.display = 'inline-block'; // Use inline-block to respect button styling
+                shareBtn.style.display = 'inline-block';
+            }
+
+            // --- Initial setup on page load ---
+            nameInput.value = defaultName; // Set the input field value to "Adhi"
+            createGreeting(defaultName);   // Generate the initial greeting
+
+            // Event listener for the "Update Greeting" button
+            generateBtn.addEventListener('click', () => {
+                const name = nameInput.value.trim();
+                createGreeting(name); // Call the same function to update the greeting
             });
 
             // Event listener for the "Share on WhatsApp" button
             shareBtn.addEventListener('click', () => {
-                // Get the generated message text
                 const message = greetingMessage.innerText;
-                // Get the current page URL
                 const pageUrl = window.location.href;
-                
-                // Construct the full text to share
                 const shareText = `${message}\n\nCreate your own special greeting here: ${pageUrl}`;
-                
-                // Encode the text for the URL
                 const encodedText = encodeURIComponent(shareText);
-                
-                // Create the WhatsApp share link
                 const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedText}`;
                 
-                // Open the link in a new tab
                 window.open(whatsappUrl, '_blank');
             });
         });
