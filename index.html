@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -43,6 +43,18 @@
             display: flex;
             flex-direction: column;
             gap: 25px; /* Spacing between elements */
+        }
+
+        /* --- Friendship GIF Styling (NEW) --- */
+        .friendship-gif {
+            width: 100%;
+            max-width: 300px; /* Controls the max size of the GIF */
+            margin: 0 auto 15px; /* Centers the GIF and adds space below */
+            border-radius: 15px;
+            display: block;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.7); /* Adds a cyan glow */
+            border: 2px solid var(--cyan);
+            animation: fadeIn 1.5s ease-in-out;
         }
 
         /* --- Glowing Headline --- */
@@ -198,6 +210,9 @@
 <body>
 
     <div class="container">
+        <!-- Friendship GIF (NEW) -->
+        <img src="friend.gif" alt="Friends celebrating together" class="friend-gif">
+
         <!-- Glowing Headline -->
         <h1 class="neon-headline">
             💖 Happy Friendship Day!
