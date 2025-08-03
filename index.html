@@ -1,9 +1,9 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Friendship Day Greeting from Adhi</title>
+    <title>Friendship Day Greeting Generator</title>
     <style>
         /* --- Google Font Import --- */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
@@ -42,7 +42,7 @@
             text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 30px; /* Spacing between elements */
+            gap: 25px; /* Spacing between elements */
         }
 
         /* --- Glowing Headline --- */
@@ -104,7 +104,6 @@
             animation: shake 0.5s ease-in-out;
         }
 
-
         /* --- Neon Buttons --- */
         .neon-button {
             cursor: pointer;
@@ -129,18 +128,12 @@
             background-color: var(--pink);
             box-shadow: 0 0 20px var(--pink), 0 0 40px var(--pink), inset 0 0 10px #fff;
         }
-        
-        #generateBtn {
-            /* Changed text to reflect its new function */
-            content: 'Update Greeting';
-        }
 
         /* --- Generated Message Card --- */
         .neon-box {
             border: 2px solid var(--cyan);
             border-radius: 15px;
             padding: 25px;
-            margin-top: 10px;
             box-shadow: 0 0 15px var(--cyan), inset 0 0 15px var(--cyan);
             animation: fadeIn 1s ease-in-out;
             background: rgba(0, 242, 255, 0.05);
@@ -199,21 +192,6 @@
             .neon-headline span {
                 font-size: 1rem;
             }
-            .container {
-                gap: 25px;
-                padding: 10px;
-            }
-            #nameInput, .neon-button {
-                padding: 12px 20px;
-                font-size: 0.9rem;
-                min-width: 220px;
-            }
-            .neon-box {
-                padding: 20px;
-            }
-            #greetingMessage {
-                font-size: 1.1rem;
-            }
         }
     </style>
 </head>
@@ -228,68 +206,72 @@
 
         <!-- Input Field for User's Name -->
         <div class="input-group">
-            <input type="text" id="nameInput" placeholder="Enter your name">
+            <input type="text" id="nameInput" placeholder="Enter YOUR name to create a link">
         </div>
         
         <!-- Generate Button -->
-        <button id="generateBtn" class="neon-button">Update Greeting</button>
+        <button id="generateBtn" class="neon-button">Generate Greeting</button>
 
-        <!-- Generated Message Card (Visible by default) -->
-        <div id="greetingCard" class="neon-box">
+        <!-- Generated Message Card (Initially Hidden) -->
+        <div id="greetingCard" class="neon-box" style="display: none;">
             <p id="greetingMessage"></p>
         </div>
         
-        <!-- Share on WhatsApp Button (Visible by default) -->
-        <button id="shareBtn" class="neon-button">Share on WhatsApp</button>
+        <!-- Share on WhatsApp Button (Initially Hidden) -->
+        <button id="shareBtn" class="neon-button" style="display: none;">Share on WhatsApp</button>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Get DOM elements
             const nameInput = document.getElementById('nameInput');
             const generateBtn = document.getElementById('generateBtn');
             const greetingCard = document.getElementById('greetingCard');
             const greetingMessage = document.getElementById('greetingMessage');
             const shareBtn = document.getElementById('shareBtn');
 
-            // --- Pre-fill the greeting for "Adhi" on page load ---
-            const defaultName = 'Adhi';
+            // --- Function to create and display the greeting ---
+            const createGreeting = (name) => {
+                const message = `Happy Friendship Day from ${name}! 🎉 You're an amazing friend and I'm so grateful for you!`;
+                greetingMessage.innerText = message;
+                greetingCard.style.display = 'block';
+                shareBtn.style.display = 'inline-block';
+            };
 
-            // Function to generate and display the greeting
-            function createGreeting(name) {
-                // Validate name
+            // --- Check for a name in the URL when the page loads ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const nameFromUrl = urlParams.get('name');
+
+            if (nameFromUrl) {
+                // If a name is found in the URL, display the greeting automatically
+                const senderName = decodeURIComponent(nameFromUrl);
+                nameInput.value = senderName; // Optional: fill the input box
+                createGreeting(senderName);
+            }
+
+            // --- Event listener for the "Generate Greeting" button ---
+            generateBtn.addEventListener('click', () => {
+                const name = nameInput.value.trim();
                 if (name === '') {
                     nameInput.classList.add('error');
                     setTimeout(() => nameInput.classList.remove('error'), 500);
                     return;
                 }
-                
-                // Create the custom message
-                const message = `Happy Friendship Day from ${name}! 🎉 You're an amazing friend and I'm so grateful for you!`;
-                
-                // Display the message
-                greetingMessage.innerText = message;
-                
-                // Ensure card and button are visible
-                greetingCard.style.display = 'block';
-                shareBtn.style.display = 'inline-block';
-            }
-
-            // --- Initial setup on page load ---
-            nameInput.value = defaultName; // Set the input field value to "Adhi"
-            createGreeting(defaultName);   // Generate the initial greeting
-
-            // Event listener for the "Update Greeting" button
-            generateBtn.addEventListener('click', () => {
-                const name = nameInput.value.trim();
-                createGreeting(name); // Call the same function to update the greeting
+                createGreeting(name);
             });
 
-            // Event listener for the "Share on WhatsApp" button
+            // --- Event listener for the "Share on WhatsApp" button ---
             shareBtn.addEventListener('click', () => {
+                const currentName = nameInput.value.trim();
+                if (currentName === '') return; // Don't share if name is empty
+
+                // Get the base URL (without any old parameters)
+                const baseUrl = window.location.origin + window.location.pathname;
+                
+                // Create the new, shareable link with the name parameter
+                const shareUrl = `${baseUrl}?name=${encodeURIComponent(currentName)}`;
+
                 const message = greetingMessage.innerText;
-                const pageUrl = window.location.href;
-                const shareText = `${message}\n\nCreate your own special greeting here: ${pageUrl}`;
+                const shareText = `${message}\n\nSee this greeting online: ${shareUrl}`;
                 const encodedText = encodeURIComponent(shareText);
                 const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedText}`;
                 
