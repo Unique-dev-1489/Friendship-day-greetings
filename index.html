@@ -244,7 +244,8 @@
             if (nameFromUrl) {
                 // If a name is found in the URL, display the greeting automatically
                 const senderName = decodeURIComponent(nameFromUrl);
-                nameInput.value = senderName; // Optional: fill the input box
+                nameInput.value = senderName; // Fills the input box for clarity
+                nameInput.placeholder = "You can change the name and create a new link"; // Update placeholder
                 createGreeting(senderName);
             }
 
