@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friendship Day Greeting Generator</title>
+    <style>
+        /* --- Google Font Import --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap');
+
+        /* --- CSS Variables for Neon Theme --- */
+        :root {
+            --dark-bg: #0d0221;
+            --pink: #ff00de;
+            --cyan: #00f2ff;
+            --light: #f5f5f5;
+        }
+
+        /* --- Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* --- Main Container --- */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 30px; /* Spacing between elements */
+        }
+
+        /* --- Glowing Headline --- */
+        .neon-headline {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--light);
+            text-shadow:
+                0 0 5px rgba(255, 255, 255, 0.8),
+                0 0 10px var(--pink),
+                0 0 20px var(--pink),
+                0 0 40px var(--pink);
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .neon-headline span {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-top: 10px;
+            color: var(--cyan);
+            text-shadow:
+                0 0 5px var(--cyan),
+                0 0 10px var(--cyan);
+        }
+
+        /* --- Input Field --- */
+        .input-group {
+            width: 100%;
+        }
+
+        #nameInput {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px 20px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            color: var(--light);
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--cyan);
+            border-radius: 50px;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.5), inset 0 0 10px rgba(0, 242, 255, 0.3);
+        }
+
+        #nameInput::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        #nameInput:focus {
+            border-color: var(--pink);
+            box-shadow: 0 0 20px rgba(255, 0, 222, 0.7), inset 0 0 10px rgba(255, 0, 222, 0.5);
+        }
+        
+        #nameInput.error {
+            border-color: #ff4757;
+            animation: shake 0.5s ease-in-out;
+        }
+
+
+        /* --- Neon Buttons --- */
+        .neon-button {
+            cursor: pointer;
+            border: 2px solid var(--pink);
+            background-color: transparent;
+            color: var(--pink);
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px var(--pink);
+            box-shadow: 0 0 10px var(--pink), inset 0 0 10px var(--pink);
+            transition: all 0.3s ease;
+            align-self: center; /* Center buttons in flex container */
+            min-width: 250px;
+        }
+
+        .neon-button:hover {
+            color: var(--dark-bg);
+            background-color: var(--pink);
+            box-shadow: 0 0 20px var(--pink), 0 0 40px var(--pink), inset 0 0 10px #fff;
+        }
+
+        /* --- Generated Message Card --- */
+        .neon-box {
+            border: 2px solid var(--cyan);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 10px;
+            box-shadow: 0 0 15px var(--cyan), inset 0 0 15px var(--cyan);
+            animation: fadeIn 1s ease-in-out;
+            background: rgba(0, 242, 255, 0.05);
+        }
+
+        #greetingMessage {
+            font-size: 1.2rem;
+            color: var(--light);
+            text-shadow: 0 0 5px #fff, 0 0 10px var(--cyan);
+            line-height: 1.6;
+        }
+
+        /* --- Share Button Special Styling --- */
+        #shareBtn {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            text-shadow: 0 0 5px var(--cyan);
+            box-shadow: 0 0 10px var(--cyan), inset 0 0 10px var(--cyan);
+            animation: pulseGlow 2.5s infinite ease-in-out;
+        }
+        #shareBtn:hover {
+            color: var(--dark-bg);
+            background-color: var(--cyan);
+            box-shadow: 0 0 20px var(--cyan), 0 0 40px var(--cyan), inset 0 0 10px #fff;
+        }
+
+        /* --- Keyframe Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 10px var(--cyan), inset 0 0 10px var(--cyan);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 25px var(--cyan), inset 0 0 15px var(--cyan);
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+        }
+
+        /* --- Responsive Design for Mobile --- */
+        @media (max-width: 600px) {
+            .neon-headline {
+                font-size: 1.8rem;
+            }
+            .neon-headline span {
+                font-size: 1rem;
+            }
+            .container {
+                gap: 25px;
+                padding: 10px;
+            }
+            #nameInput, .neon-button {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+                min-width: 220px;
+            }
+            .neon-box {
+                padding: 20px;
+            }
+            #greetingMessage {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Glowing Headline -->
+        <h1 class="neon-headline">
+            💖 Happy Friendship Day!
+            <span>Celebrating the bond that makes life beautiful</span>
+        </h1>
+
+        <!-- Input Field for User's Name -->
+        <div class="input-group">
+            <input type="text" id="nameInput" placeholder="Enter your name">
+        </div>
+        
+        <!-- Generate Button -->
+        <button id="generateBtn" class="neon-button">Generate Greeting</button>
+
+        <!-- Generated Message Card (Initially Hidden) -->
+        <div id="greetingCard" class="neon-box" style="display: none;">
+            <p id="greetingMessage"></p>
+        </div>
+        
+        <!-- Share on WhatsApp Button (Initially Hidden) -->
+        <button id="shareBtn" class="neon-button" style="display: none;">Share on WhatsApp</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get DOM elements
+            const nameInput = document.getElementById('nameInput');
+            const generateBtn = document.getElementById('generateBtn');
+            const greetingCard = document.getElementById('greetingCard');
+            const greetingMessage = document.getElementById('greetingMessage');
+            const shareBtn = document.getElementById('shareBtn');
+
+            // Event listener for the "Generate Greeting" button
+            generateBtn.addEventListener('click', () => {
+                const name = nameInput.value.trim();
+
+                // Validate that the name is not empty
+                if (name === '') {
+                    // Add an error class for a shake animation
+                    nameInput.classList.add('error');
+                    // Remove the class after the animation ends
+                    setTimeout(() => {
+                        nameInput.classList.remove('error');
+                    }, 500);
+                    return; // Stop the function
+                }
+
+                // Create the custom greeting message
+                const message = `Happy Friendship Day from ${name}! 🎉 You're an amazing friend and I'm so grateful for you!`;
+                
+                // Display the message in the neon box
+                greetingMessage.innerText = message;
+                greetingCard.style.display = 'block';
+                shareBtn.style.display = 'inline-block'; // Use inline-block to respect button styling
+            });
+
+            // Event listener for the "Share on WhatsApp" button
+            shareBtn.addEventListener('click', () => {
+                // Get the generated message text
+                const message = greetingMessage.innerText;
+                // Get the current page URL
+                const pageUrl = window.location.href;
+                
+                // Construct the full text to share
+                const shareText = `${message}\n\nCreate your own special greeting here: ${pageUrl}`;
+                
+                // Encode the text for the URL
+                const encodedText = encodeURIComponent(shareText);
+                
+                // Create the WhatsApp share link
+                const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedText}`;
+                
+                // Open the link in a new tab
+                window.open(whatsappUrl, '_blank');
+            });
+        });
+    </script>
+</body>
+</html>
